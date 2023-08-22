@@ -47,6 +47,19 @@ footer {
 
 .units {
   position: relative;
-  top: -20px;
+  top: -25px;
   font-size: 24px;
+}
+
+#weather-icon {
+  position: relative;
+  top: -20px;
+}
+
+.weather-information {
+  padding-top: 20px;
+}
+
+.additional-weather-info {
+  padding-top: 20px;
 }

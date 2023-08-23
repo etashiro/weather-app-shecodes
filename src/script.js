@@ -27,6 +27,8 @@ currentTime.innerHTML = `${currentDay} ${currentHours}:${currentMinutes}`;
 function displaySearchedCityInfo(response) {
   document.querySelector("h1").innerHTML = response.data.city;
 
+  farenheitTemp = response.data.temperature.current;
+
   document.querySelector("#temp-today").innerHTML = Math.round(
     response.data.temperature.current
   );
@@ -67,11 +69,6 @@ function getDefaultInfo() {
   axios.get(weatherUrl).then(displaySearchedCityInfo);
 }
 
-getDefaultInfo();
-
-let searchForm = document.querySelector("#city-search-form");
-searchForm.addEventListener("submit", getWeatherInfo);
-
 function showUserPosition(position) {
   let cityLat = position.coords.latitude;
   let cityLon = position.coords.longitude;
@@ -88,5 +85,37 @@ function getCurrentLocation() {
   navigator.geolocation.getCurrentPosition(showUserPosition);
 }
 
+function displayCelsiusTemp(event) {
+  event.preventDefault();
+
+  farenheitConversion.classList.remove("active");
+  celsiusConversion.classList.add("active");
+
+  celsiusTemp = ((farenheitTemp - 32) * 5) / 9;
+  document.querySelector("#temp-today").innerHTML = Math.round(celsiusTemp);
+}
+
+function displayFarenheitTemp(event) {
+  event.preventDefault();
+
+  farenheitConversion.classList.add("active");
+  celsiusConversion.classList.remove("active");
+
+  document.querySelector("#temp-today").innerHTML = Math.round(farenheitTemp);
+}
+
+let farenheitTemp = null;
+
+let searchForm = document.querySelector("#city-search-form");
+searchForm.addEventListener("submit", getWeatherInfo);
+
 let currentLocation = document.querySelector("#current-location");
 currentLocation.addEventListener("click", getCurrentLocation);
+
+let celsiusConversion = document.querySelector("#celsius-link");
+celsiusConversion.addEventListener("click", displayCelsiusTemp);
+
+let farenheitConversion = document.querySelector("#farenheit-link");
+farenheitConversion.addEventListener("click", displayFarenheitTemp);
+
+getDefaultInfo();

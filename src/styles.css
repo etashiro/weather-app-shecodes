@@ -26,6 +26,11 @@ li {
   list-style: none;
 }
 
+a {
+  text-decoration: none;
+  cursor: default;
+}
+
 footer {
   font-size: 14px;
   text-align: center;
@@ -48,7 +53,7 @@ footer {
 .units {
   position: relative;
   top: -25px;
-  font-size: 24px;
+  font-size: 20px;
 }
 
 #weather-icon {
@@ -62,4 +67,8 @@ footer {
 
 .additional-weather-info {
   padding-top: 20px;
+}
+
+.weather-information .active {
+  color: #272044;
 }

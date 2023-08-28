@@ -72,3 +72,16 @@ footer {
 .weather-information .active {
   color: #272044;
 }
+
+.weather-forecast {
+  text-align: center;
+  font-size: 16px;
+}
+
+.weather-forecast-temp {
+  font-size: 13px;
+}
+
+.weather-forecast-temp-min {
+  color: #7c7c7c;
+}

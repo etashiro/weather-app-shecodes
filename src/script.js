@@ -24,31 +24,55 @@ if (currentMinutes < 10) {
 
 currentTime.innerHTML = `${currentDay} ${currentHours}:${currentMinutes}`;
 
-function displayForecast() {
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  return days[day];
+}
+
+function displayForecast(response) {
+  let forecast = response.data.daily;
+
   let forecastElement = document.querySelector("#forecast");
 
-  let days = ["Wed", "Thu", "Fri", "Sat", "Sun"];
-
   let forecastHTML = `<div class="row">`;
-  days.forEach(function (day) {
-    forecastHTML =
-      forecastHTML +
-      `
+  forecast.forEach(function (forecastDay, index) {
+    if (index < 6) {
+      forecastHTML =
+        forecastHTML +
+        `
     <div class="col-2">
-      <div class="weather-forecast-day">${day}</div>
+      <div class="weather-forecast-day">${formatDay(forecastDay.time)}</div>
       <img
-        src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/clear-sky-day.png"
+        src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${
+          forecastDay.condition.icon
+        }.png"
         width="40px;"
       />
       <div class="weather-forecast-temp">
-        <span class="weather-forecast-temp-max">53°</span>
-        <span class="weather-forecast-temp-min">86°</span>
+        <span class="weather-forecast-temp-max">${Math.round(
+          forecastDay.temperature.maximum
+        )}°</span>
+        <span class="weather-forecast-temp-min">${Math.round(
+          forecastDay.temperature.minimum
+        )}°</span>
       </div>
     </div>
   `;
+    }
   });
   forecastHTML = forecastHTML + `</div>`;
   forecastElement.innerHTML = forecastHTML;
+}
+
+function getForecast(coordinates) {
+  let apiKey = "34386e004af6ea0365btbb6ff72e0aoe";
+  let units = "imperial";
+
+  let forecastUrl = `https://api.shecodes.io/weather/v1/forecast?lon=${coordinates.longitude}&lat=${coordinates.latitude}&key=${apiKey}&units=${units}`;
+  axios.get(forecastUrl).then(displayForecast);
 }
 
 function displaySearchedCityInfo(response) {
@@ -71,6 +95,8 @@ function displaySearchedCityInfo(response) {
   document
     .querySelector("#weather-icon")
     .setAttribute("src", response.data.condition.icon_url);
+
+  getForecast(response.data.coordinates);
 }
 
 function getWeatherInfo(event) {
@@ -146,4 +172,3 @@ let farenheitConversion = document.querySelector("#farenheit-link");
 farenheitConversion.addEventListener("click", displayFarenheitTemp);
 
 getDefaultInfo();
-displayForecast();

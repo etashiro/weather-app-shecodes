@@ -24,6 +24,33 @@ if (currentMinutes < 10) {
 
 currentTime.innerHTML = `${currentDay} ${currentHours}:${currentMinutes}`;
 
+function displayForecast() {
+  let forecastElement = document.querySelector("#forecast");
+
+  let days = ["Wed", "Thu", "Fri", "Sat", "Sun"];
+
+  let forecastHTML = `<div class="row">`;
+  days.forEach(function (day) {
+    forecastHTML =
+      forecastHTML +
+      `
+    <div class="col-2">
+      <div class="weather-forecast-day">${day}</div>
+      <img
+        src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/clear-sky-day.png"
+        width="40px;"
+      />
+      <div class="weather-forecast-temp">
+        <span class="weather-forecast-temp-max">53°</span>
+        <span class="weather-forecast-temp-min">86°</span>
+      </div>
+    </div>
+  `;
+  });
+  forecastHTML = forecastHTML + `</div>`;
+  forecastElement.innerHTML = forecastHTML;
+}
+
 function displaySearchedCityInfo(response) {
   document.querySelector("h1").innerHTML = response.data.city;
 
@@ -119,3 +146,4 @@ let farenheitConversion = document.querySelector("#farenheit-link");
 farenheitConversion.addEventListener("click", displayFarenheitTemp);
 
 getDefaultInfo();
+displayForecast();
